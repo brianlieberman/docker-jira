@@ -1,0 +1,32 @@
+version: '2'
+services:
+  jira:
+    ports:
+      - "8080:8080"
+    image: million12/jira
+    environment:
+      - MARIADB_USER=admin
+      - MARIADB_PASS=password
+      - JIRA_DB_ADDRESS=jira.db
+      - JIRA_DB_NAME=jiradb
+      - JIRA_USER=jira-user
+      - JIRA_PASS=password
+      - DB_SUPPORT=mariadb
+    links:
+      - jira-db:jira.db
+    volumes_from:
+      - jira-data
+    depends_on:
+      - jira-db
+      - jira-data
+  jira-db:
+    image: million12/mariadb
+    environment: 
+      - MARIADB_USER=admin
+      - MARIADB_PASS=password
+  jira-data:
+    image: busybox:latest
+    volumes: 
+     - /data/jira/jira-install:/opt/atlassian
+     - /data/jira/jira-data:/var/atlassian
+
