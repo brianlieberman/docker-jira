@@ -14,19 +14,15 @@ services:
       - DB_SUPPORT=mariadb
     links:
       - jira-db:jira.db
-    volumes_from:
-      - jira-data
+    volumes:
+      - /opt/atlassian
+      - /var/atlassian
     depends_on:
       - jira-db
-      - jira-data
   jira-db:
     image: million12/mariadb
     environment: 
       - MARIADB_USER=admin
       - MARIADB_PASS=password
-  jira-data:
-    image: busybox:latest
-    volumes: 
-     - /data/jira/jira-install:/opt/atlassian
-     - /data/jira/jira-data:/var/atlassian
+
 
